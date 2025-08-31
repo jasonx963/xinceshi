@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Leads Admin · Secure Claim Bureau</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css" />
+  <style>
+    body{background:#0b2341;color:#fff}
+    .admin{max-width:1120px;margin:28px auto;padding:0 20px}
+    .admin h1{font-size:28px;margin:0 0 12px}
+    .admin .actions{display:flex;gap:10px;margin:10px 0 16px}
+    table{width:100%;border-collapse:collapse;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.15);border-radius:12px;overflow:hidden}
+    th,td{padding:10px 12px;border-bottom:1px solid rgba(255,255,255,.1);vertical-align:top}
+    th{background:rgba(255,255,255,.06);text-align:left}
+    tr:last-child td{border-bottom:0}
+    .muted{opacity:.85}
+    .btn{border-color:#fff}
+  </style>
+</head>
+<body>
+  <div class="admin">
+    <h1>Leads Admin</h1>
+    <div class="actions">
+      <button class="btn btn--outline" id="btn-refresh">Refresh</button>
+      <button class="btn btn--outline" id="btn-export">Export CSV</button>
+      <span class="tiny" style="opacity:.9">Reads from Google Sheet if configured, otherwise shows local backup.</span>
+    </div>
+    <table id="grid">
+      <thead>
+        <tr><th>Time</th><th>Name</th><th>Email</th><th>Phone</th><th>Country</th><th>Amount</th><th>Description</th><th>Source</th></tr>
+      </thead>
+      <tbody></tbody>
+    </table>
+  </div>
+  <script src="config.js"></script>
+  <script>
+  async function fetchRemote(){
+    const cfg = window.APP_CONFIG||{};
+    const url = (cfg.LEADS_ENDPOINT||'').trim();
+    if(!url) return null;
+    try{
+      const u = new URL(url); u.searchParams.set('mode','list'); u.searchParams.set('secret', cfg.LEADS_SECRET||'');
+      const res = await fetch(u.toString()); if(!res.ok) throw new Error('HTTP '+res.status);
+      const j = await res.json(); return j && Array.isArray(j.rows) ? j.rows : null;
+    }catch(e){ console.warn(e); return null; }
+  }
+  function fill(rows){
+    const tb = document.querySelector('#grid tbody'); tb.innerHTML='';
+    (rows||[]).forEach(r=>{
+      const tr = document.createElement('tr');
+      tr.innerHTML = `<td class="muted">${r.ts||''}</td><td>${r.name||''}</td><td>${r.email||''}</td><td>${r.phone||''}</td><td>${r.country||''}</td><td>${r.amount||''}</td><td>${r.desc||''}</td><td class="muted">${r.source||''}</td>`;
+      tb.appendChild(tr);
+    });
+  }
+  async function refresh(){ const remote = await fetchRemote(); if(remote && remote.length){ fill(remote);} else { fill(window.__LEADS_LOCAL__.load()); } }
+  document.getElementById('btn-refresh').addEventListener('click', refresh);
+  document.getElementById('btn-export').addEventListener('click', ()=>{
+    const tb = document.querySelector('#grid tbody');
+    const head = ['Time','Name','Email','Phone','Country','Amount','Description','Source'];
+    const rows = [head.join(',')];
+    tb.querySelectorAll('tr').forEach(tr=>{
+      const tds = [...tr.children].map(td => `"${String(td.innerText).replace(/"/g,'""')}"`);
+      rows.push(tds.join(','));
+    });
+    const blob = new Blob([rows.join('\n')], {type:'text/csv;charset=utf-8;'});
+    const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = 'leads.csv'; a.click();
+  });
+  refresh();
+  </script>
+  <script src="app.js"></script>
+</body>
+</html>
