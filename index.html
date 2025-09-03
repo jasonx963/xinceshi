@@ -29,8 +29,8 @@
 
   <style>
     :root{--ink:#20282d;--muted:#64748b;--accent:#0d6efd}
-    html,body{height:100%}
-    body{font-family:'DM Sans',system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;color:var(--ink);background:#f7f8fb}
+    html,body{height:100%;margin:0;padding:0}
+    body{font-family:'DM Sans',system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;color:var(--ink);background:#f7f8fb;overflow-x:hidden}
     h1,h2,h3,h4,h5{font-family:'Red Hat Display',sans-serif}
     a{color:var(--accent)}
 
@@ -39,42 +39,43 @@
     .brand img{height:38px}
 
     /* Hero */
-    .hero{color:#fff;position:relative;background:linear-gradient(140deg,rgba(0,0,0,.6),rgba(0,0,0,.5)), url('https://int-legal-assist.com/assets/img/0-asd.jpg');background-size:cover;background-position:center}
-    .hero .card-badges .item{display:flex;align-items:center;gap:.5rem;background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.2);border-radius:12px;padding:.6rem .9rem}
+    .hero{color:#fff;position:relative;background:linear-gradient(140deg,rgba(0,0,0,.6),rgba(0,0,0,.5)), url('https://int-legal-assist.com/assets/img/0-asd.jpg');background-size:cover;background-position:center;background-attachment:scroll;min-height:clamp(420px,68vh,760px);display:flex;align-items:center}
+    .hero .container{position:relative;z-index:2}
 
     /* Section titles */
     .section-head .pre{color:var(--accent);font-weight:700;text-transform:uppercase;letter-spacing:.08em;font-size:.85rem}
     .section-head .title{font-weight:900}
 
     /* About */
-    .about-figure{position:relative}
+    .about-figure{position:relative;overflow:visible}
     .about-figure .badge-years{position:absolute;left:16px;top:16px;background:#0b1220;color:#fff;border-radius:14px;padding:.6rem .9rem;box-shadow:0 6px 18px rgba(0,0,0,.25)}
-    .about-figure .mini{position:absolute;right:-16px;bottom:-16px;width:140px;border-radius:12px;box-shadow:0 8px 20px rgba(0,0,0,.18)}
+    .about-figure .mini{position:absolute;right:-16px;bottom:-16px;width:46%;max-width:260px;border-radius:12px;box-shadow:0 8px 20px rgba(0,0,0,.18)}
 
-    /* Services (alternating rows) */
+    /* Responsive images */
+    img{max-width:100%;height:auto}
+
+    /* Services */
     .service-row{background:#fff;border:1px solid #e9eef5;border-radius:16px;overflow:hidden}
-    .service-row .thumb{height:230px;background-position:center;background-size:cover}
+    .service-row .thumb{width:100%;height:230px;background-position:center;background-size:cover}
 
-    /* Process (dark section) */
+    /* Process */
     .process{background:#121821;color:#d1d5db}
     .process .step{display:flex;align-items:flex-start;gap:1rem;background:#1a2330;border:1px solid #2a3444;border-radius:14px;padding:16px}
     .process .num{flex:0 0 40px;height:40px;border-radius:50%;display:grid;place-items:center;background:#0b5dd7;color:#fff;font-weight:700}
 
-    /* Stats */
-    .stats{background:#fff;border:1px solid #e9eef5;border-radius:16px}
-
-    /* FAQ */
-    .faq .accordion-button{font-weight:600}
-
-    /* Footer */
-    .site-footer{background:#0b1220;color:#d1d5db}
-    .site-footer a{color:#bcd5ff}
     /* Reveal on scroll */
-  .reveal{opacity:0;transform:translateY(24px);transition:opacity .6s ease, transform .6s ease}
-  .reveal.in{opacity:1;transform:none}
-  /* Parallax feel for hero */
-  .hero-parallax{will-change:background-position}
-</style>
+    .reveal{opacity:0;transform:translateY(24px);transition:opacity .6s ease, transform .6s ease}
+    .reveal.in{opacity:1;transform:none}
+
+    /* Responsive fix */
+    @media (max-width: 991.98px){
+      .hero{min-height:64vh;background-position:center}
+      .about-figure .mini{position:static;display:block;width:60%;max-width:none;margin:12px auto 0}
+    }
+    @media (min-width: 1400px){
+      .hero{min-height:72vh;background-position:center 20%}
+    }
+  </style>
 </head>
 <body>
   <!-- Header -->
@@ -96,34 +97,29 @@
   </header>
 
   <!-- Hero -->
-  <section class="hero hero-parallax reveal" data-animate="true" py-5 py-lg-6">
-    <div class="container">
-      <div class="row align-items-center g-4">
-        <div class="col-lg-7">
-          <p class="mb-2 text-uppercase fw-bold text-primary">International Legal Assistance</p>
-          <h1 class="display-5 mb-3">We will return your money. <span class="text-info">Legally</span> and <span class="text-warning">reliably</span>.</h1>
-          <a class="btn btn-light btn-lg" href="#contact">Get a free consultation</a>
-          <div class="card-badges mt-4 d-flex flex-wrap gap-2">
-            <div class="item"><i class="fa-solid fa-sack-dollar"></i><span> Over $10M returned</span></div>
-            <div class="item"><i class="fa-solid fa-calendar-check"></i><span> Since 2009</span></div>
-            <div class="item"><i class="fa-solid fa-arrow-up"></i><span> Min. case: 3,000 CAD</span></div>
-          </div>
-        </div>
+  <section class="hero reveal py-5 py-lg-6" data-animate="true">
+    <div class="container text-center text-lg-start">
+      <h1 class="display-5 mb-3">We will return your money. <span class="text-info">Legally</span> and <span class="text-warning">reliably</span>.</h1>
+      <a class="btn btn-light btn-lg" href="#contact">Get a free consultation</a>
+      <div class="d-flex flex-wrap gap-3 mt-4 justify-content-center justify-content-lg-start">
+        <div class="item bg-dark bg-opacity-50 px-3 py-2 rounded text-white"><i class="fa-solid fa-sack-dollar"></i> Over $10M returned</div>
+        <div class="item bg-dark bg-opacity-50 px-3 py-2 rounded text-white"><i class="fa-solid fa-calendar-check"></i> Since 2009</div>
+        <div class="item bg-dark bg-opacity-50 px-3 py-2 rounded text-white"><i class="fa-solid fa-arrow-up"></i> Min. case: 3,000 CAD</div>
       </div>
     </div>
   </section>
 
   <!-- About -->
-  <section id="about" class="reveal" data-animate="true" class="py-5">
+  <section id="about" class="reveal py-5" data-animate="true">
     <div class="container">
       <div class="row align-items-center g-4">
         <div class="col-lg-6 about-figure">
-          <img loading=\"lazy\" class=\"img-fluid rounded-4 shadow\" alt=\"About\" src="https://int-legal-assist.com/assets/images/about/04.webp" />
+          <img loading="lazy" src="https://int-legal-assist.com/assets/images/about/04.webp" alt="About" class="img-fluid rounded-4 shadow" />
           <div class="badge-years text-center">
             <div class="fw-bold fs-4">15+</div>
             <div class="small text-white-50">Years of experience</div>
           </div>
-          <img loading=\"lazy\" class=\"mini d-none d-md-block\" alt="Small" src="https://int-legal-assist.com/assets/img/6.jpg" />
+          <img loading="lazy" src="https://int-legal-assist.com/assets/img/6.jpg" alt="Small" class="mini" />
         </div>
         <div class="col-lg-6">
           <div class="section-head mb-3"><div class="pre">More about us</div><h2 class="title h1">Professionals trusted for refunds</h2></div>
@@ -138,8 +134,8 @@
     </div>
   </section>
 
-  <!-- Services (alternating rows like the screenshot) -->
-  <section id="services" class="reveal" data-animate="true" class="py-5">
+  <!-- Services -->
+  <section id="services" class="reveal py-5" data-animate="true">
     <div class="container">
       <div class="text-center mb-4 section-head">
         <div class="pre">Our Services</div>
@@ -153,7 +149,7 @@
           <div class="service-row p-3 p-md-4">
             <div class="row g-4 align-items-center">
               <div class="col-md-6">
-                <div class=\"thumb rounded-3 reveal\" data-animate=\"true\" style=\"background-image:url('https://int-legal-assist.com/assets/img/11.jpg')\"></div>
+                <div class="thumb rounded-3" style="background-image:url('https://int-legal-assist.com/assets/img/11.jpg')"></div>
               </div>
               <div class="col-md-6">
                 <h5 class="mb-2"><i class="fa-solid fa-university me-2"></i>Refund from scam brokers</h5>
@@ -171,7 +167,7 @@
           <div class="service-row p-3 p-md-4">
             <div class="row g-4 align-items-center flex-md-row-reverse">
               <div class="col-md-6">
-                <div class=\"thumb rounded-3 reveal\" data-animate=\"true\" style=\"background-image:url('https://int-legal-assist.com/assets/img/22-asqq.webp')\"></div>
+                <div class="thumb rounded-3" style="background-image:url('https://int-legal-assist.com/assets/img/22-asqq.webp')"></div>
               </div>
               <div class="col-md-6">
                 <h5 class="mb-2"><i class="fa-solid fa-coins me-2"></i>Refund after crypto fraud</h5>
@@ -189,7 +185,7 @@
           <div class="service-row p-3 p-md-4">
             <div class="row g-4 align-items-center">
               <div class="col-md-6">
-                <div class=\"thumb rounded-3 reveal\" data-animate=\"true\" style=\"background-image:url('https://int-legal-assist.com/assets/img/33-667a.webp')\"></div>
+                <div class="thumb rounded-3" style="background-image:url('https://int-legal-assist.com/assets/img/33-667a.webp')"></div>
               </div>
               <div class="col-md-6">
                 <h5 class="mb-2"><i class="fa-solid fa-search-dollar me-2"></i>Fight against fake investment projects</h5>
@@ -207,7 +203,7 @@
           <div class="service-row p-3 p-md-4">
             <div class="row g-4 align-items-center flex-md-row-reverse">
               <div class="col-md-6">
-                <div class=\"thumb rounded-3 reveal\" data-animate=\"true\" style=\"background-image:url('https://int-legal-assist.com/assets/img/44aa-a.jpg')\"></div>
+                <div class="thumb rounded-3" style="background-image:url('https://int-legal-assist.com/assets/img/44aa-a.jpg')"></div>
               </div>
               <div class="col-md-6">
                 <h5 class="mb-2"><i class="fa-solid fa-globe me-2"></i>International fund recovery</h5>
@@ -225,7 +221,7 @@
           <div class="service-row p-3 p-md-4">
             <div class="row g-4 align-items-center">
               <div class="col-md-6">
-                <div class=\"thumb rounded-3 reveal\" data-animate=\"true\" style=\"background-image:url('https://int-legal-assist.com/assets/img/55asf-asd.webp')\"></div>
+                <div class="thumb rounded-3" style="background-image:url('https://int-legal-assist.com/assets/img/55asf-asd.webp')"></div>
               </div>
               <div class="col-md-6">
                 <h5 class="mb-2"><i class="fa-solid fa-shield-halved me-2"></i>Other types of online fraud</h5>
@@ -242,8 +238,8 @@
     </div>
   </section>
 
-  <!-- Process (dark section) -->
-  <section id="process" class="reveal" data-animate="true" class="py-5 process">
+  <!-- Process (dark) -->
+  <section id="process" class="reveal py-5 process" data-animate="true">
     <div class="container">
       <div class="row g-4 align-items-center">
         <div class="col-lg-6">
@@ -257,19 +253,19 @@
           </div>
         </div>
         <div class="col-lg-6 text-center">
-          <img class="img-fluid rounded-4 shadow" alt="Process" src="https://int-legal-assist.com/assets/images/process/03.webp" />
+          <img loading="lazy" class="img-fluid rounded-4 shadow" alt="Process" src="https://int-legal-assist.com/assets/images/process/03.webp" />
         </div>
       </div>
     </div>
   </section>
 
   <!-- FAQ -->
-  <section id="faq" class="reveal" data-animate="true" class="py-5">
+  <section id="faq" class="reveal py-5" data-animate="true">
     <div class="container faq">
       <div class="section-head text-center mb-4"><div class="pre">FAQ</div><h2 class="title">Frequently Asked Questions</h2></div>
       <div class="row g-4 align-items-start">
         <div class="col-lg-5 order-lg-2 text-center">
-          <img src="https://int-legal-assist.com/assets/img/4.jpg" class="img-fluid rounded-4 shadow" alt="FAQ Illustration" />
+          <img loading="lazy" src="https://int-legal-assist.com/assets/img/4.jpg" class="img-fluid rounded-4 shadow" alt="FAQ Illustration" />
         </div>
         <div class="col-lg-7 order-lg-1">
           <div class="accordion" id="faqAcc">
@@ -304,7 +300,7 @@
   </section>
 
   <!-- Testimonials -->
-  <section id="testimonials" class="reveal" data-animate="true" class="py-5 bg-light" aria-label="Client testimonials">
+  <section id="testimonials" class="reveal py-5 bg-light" aria-label="Client testimonials" data-animate="true">
     <div class="container">
       <div class="d-flex align-items-end justify-content-between mb-3">
         <div class="section-head"><div class="pre">Client Testimonials</div><h2 class="title">What Our Clients Say</h2></div>
@@ -312,9 +308,9 @@
       </div>
       <div class="swiper" id="testimonials-swiper">
         <div class="swiper-wrapper">
-          <div class="swiper-slide"><div class="row g-3 align-items-center"><div class="col-sm-4"><img loading=\"lazy\" class=\"img-fluid rounded-4\" alt=\"Liam\" src="https://int-legal-assist.com/assets/images/testimonials/03.webp" /></div><div class="col-sm-8"><h5 class="mb-0">Liam M. <small class="text-muted d-block">Refund from Broker</small></h5><p class="mt-2 mb-0">“Lost C$21,000 to a forex broker… full refund in under 7 months.”</p></div></div></div>
-          <div class="swiper-slide"><div class="row g-3 align-items-center"><div class="col-sm-4"><img loading=\"lazy\" class=\"img-fluid rounded-4\" alt=\"Sophie\" src="https://int-legal-assist.com/assets/images/testimonials/04.webp" /></div><div class="col-sm-8"><h5 class="mb-0">Sophie L. <small class="text-muted d-block">Refund after Crypto Fraud</small></h5><p class="mt-2 mb-0">“Wallet drained (~C$11,500). Tracing + legal requests. Recovered.”</p></div></div></div>
-          <div class="swiper-slide"><div class="row g-3 align-items-center"><div class="col-sm-4"><img loading=\"lazy\" class=\"img-fluid rounded-4\" alt=\"Noah\" src="https://int-legal-assist.com/assets/images/testimonials/01.webp" /></div><div class="col-sm-8"><h5 class="mb-0">Noah C. <small class="text-muted d-block">Refund from Fake Investment</small></h5><p class="mt-2 mb-0">“Recovered 85% (C$27,200) via chargebacks & complaints.”</p></div></div></div>
+          <div class="swiper-slide"><div class="row g-3 align-items-center"><div class="col-sm-4"><img loading="lazy" class="img-fluid rounded-4" alt="Liam" src="https://int-legal-assist.com/assets/images/testimonials/03.webp" /></div><div class="col-sm-8"><h5 class="mb-0">Liam M. <small class="text-muted d-block">Refund from Broker</small></h5><p class="mt-2 mb-0">“Lost C$21,000 to a forex broker… full refund in under 7 months.”</p></div></div></div>
+          <div class="swiper-slide"><div class="row g-3 align-items-center"><div class="col-sm-4"><img loading="lazy" class="img-fluid rounded-4" alt="Sophie" src="https://int-legal-assist.com/assets/images/testimonials/04.webp" /></div><div class="col-sm-8"><h5 class="mb-0">Sophie L. <small class="text-muted d-block">Refund after Crypto Fraud</small></h5><p class="mt-2 mb-0">“Wallet drained (~C$11,500). Tracing + legal requests. Recovered.”</p></div></div></div>
+          <div class="swiper-slide"><div class="row g-3 align-items-center"><div class="col-sm-4"><img loading="lazy" class="img-fluid rounded-4" alt="Noah" src="https://int-legal-assist.com/assets/images/testimonials/01.webp" /></div><div class="col-sm-8"><h5 class="mb-0">Noah C. <small class="text-muted d-block">Refund from Fake Investment</small></h5><p class="mt-2 mb-0">“Recovered 85% (C$27,200) via chargebacks & complaints.”</p></div></div></div>
         </div>
       </div>
     </div>
@@ -324,7 +320,7 @@
   <section id="contact" class="py-5">
     <div class="container">
       <div class="row g-4 align-items-center">
-        <div class="col-lg-5"><img loading=\"lazy\" class=\"img-fluid rounded-4 shadow\" src=\"https://int-legal-assist.com/assets/images/contact/01.webp\" alt="Contact" /></div>
+        <div class="col-lg-5"><img loading="lazy" class="img-fluid rounded-4 shadow" src="https://int-legal-assist.com/assets/images/contact/01.webp" alt="Contact" /></div>
         <div class="col-lg-7">
           <div class="p-4 border rounded-4 bg-white">
             <h3 class="mb-3">Contact Us</h3>
@@ -349,14 +345,14 @@
   </section>
 
   <!-- Footer -->
-  <footer class="site-footer pt-5">
+  <footer class="site-footer pt-5 bg-dark text-light">
     <div class="container pb-4">
       <div class="row g-4">
         <div class="col-lg-4"><img src="https://int-legal-assist.com/assets/images/logo--2.png" alt="International Legal Assistance" class="mb-3" style="max-height:64px" /><p>Victim of online fraud? We specialize in refunding money after all types of online fraud. Min. case 3,000 CAD. Professional team of lawyers with international experience.</p></div>
-        <div class="col-lg-4"><h6>Quick Links</h6><ul class="list-unstyled small"><li><a href="#">Home</a></li><li><a href="#about">About Us</a></li><li><a href="#services">Services</a></li><li><a href="#faq">FAQ</a></li><li><a href="#testimonials">Testimonials</a></li><li><a href="#contact">Contact</a></li></ul></div>
-        <div class="col-lg-4"><h6>Contact Us</h6><ul class="list-unstyled small"><li><i class="fa-solid fa-phone"></i> <a href="tel:+12156229111">+1 215 622 9111</a></li><li><i class="fa-solid fa-envelope"></i> <a href="mailto:info@int-legal-assist.com">info@int-legal-assist.com</a></li><li><i class="fa-solid fa-location-dot"></i> 616 Bay Street, M5J 2R8, Ontario, Canada</li></ul></div>
+        <div class="col-lg-4"><h6>Quick Links</h6><ul class="list-unstyled small"><li><a class="link-light" href="#">Home</a></li><li><a class="link-light" href="#about">About Us</a></li><li><a class="link-light" href="#services">Services</a></li><li><a class="link-light" href="#faq">FAQ</a></li><li><a class="link-light" href="#testimonials">Testimonials</a></li><li><a class="link-light" href="#contact">Contact</a></li></ul></div>
+        <div class="col-lg-4"><h6>Contact Us</h6><ul class="list-unstyled small"><li><i class="fa-solid fa-phone"></i> <a class="link-light" href="tel:+12156229111">+1 215 622 9111</a></li><li><i class="fa-solid fa-envelope"></i> <a class="link-light" href="mailto:info@int-legal-assist.com">info@int-legal-assist.com</a></li><li><i class="fa-solid fa-location-dot"></i> 616 Bay Street, M5J 2R8, Ontario, Canada</li></ul></div>
       </div>
-      <div class="border-top border-secondary mt-4 pt-3 d-flex flex-wrap justify-content-between align-items-center small"><span>International Legal Assistance <script>document.write(new Date().getFullYear())</script>. All rights reserved.</span><span><a href="#">Privacy Policy</a> · <a href="#">Terms of Use</a></span></div>
+      <div class="border-top border-secondary mt-4 pt-3 d-flex flex-wrap justify-content-between align-items-center small"><span>International Legal Assistance <script>document.write(new Date().getFullYear())</script>. All rights reserved.</span><span><a class="link-light" href="#">Privacy Policy</a> · <a class="link-light" href="#">Terms of Use</a></span></div>
     </div>
   </footer>
 
@@ -375,42 +371,20 @@
 
     // Form
     const form=document.getElementById('contact-form'); const submitBtn=document.getElementById('submitBtn'); const terms=document.getElementById('terms'); terms.addEventListener('change',()=>{submitBtn.disabled=!terms.checked;});
-    form.addEventListener('submit',(e)=>{e.preventDefault(); if(!form.checkValidity()){form.reportValidity();return;} const data=Object.fromEntries(new FormData(form).entries()); if(window.iti){data.phone=window.iti.getNumber();} console.log('Form payload (demo):',data); const m=new bootstrap.Modal(document.createElement('div')); alert('Thank you! Your request has been sent.'); form.reset(); submitBtn.disabled=true;});
-  </script>
-  <script>
-    // ---- Reveal on Scroll ----
-    const revealObserver = new IntersectionObserver((entries)=>{
-      entries.forEach(e=>{ if(e.isIntersecting){ e.target.classList.add('in'); revealObserver.unobserve(e.target);} });
-    },{threshold:0.12});
-    document.querySelectorAll('[data-animate]')?.forEach(el=>revealObserver.observe(el));
+    form.addEventListener('submit',(e)=>{e.preventDefault(); if(!form.checkValidity()){form.reportValidity();return;} const data=Object.fromEntries(new FormData(form).entries()); if(window.iti){data.phone=window.iti.getNumber();} console.log('Form payload (demo):',data); alert('Thank you! Your request has been sent.'); form.reset(); submitBtn.disabled=true;});
 
-    // ---- Smooth scroll for nav links ----
-    document.querySelectorAll('a[href^="#"]').forEach(a=>{
-      a.addEventListener('click',e=>{
-        const id=a.getAttribute('href');
-        if(id.length>1){ e.preventDefault(); document.querySelector(id)?.scrollIntoView({behavior:'smooth'}); }
-      });
-    });
+    // Reveal on Scroll
+    const revealObserver = new IntersectionObserver((entries)=>{entries.forEach(e=>{ if(e.isIntersecting){ e.target.classList.add('in'); revealObserver.unobserve(e.target);} });},{threshold:0.12});
+    document.querySelectorAll('[data-animate], .reveal')?.forEach(el=>revealObserver.observe(el));
 
-    // ---- Active section highlight ----
+    // Smooth scroll
+    document.querySelectorAll('a[href^="#"]').forEach(a=>{a.addEventListener('click',e=>{const id=a.getAttribute('href'); if(id.length>1){ e.preventDefault(); document.querySelector(id)?.scrollIntoView({behavior:'smooth'}); }});});
+
+    // Active nav highlight
     const sections=[...document.querySelectorAll('section[id]')];
     const navlinks=[...document.querySelectorAll('.navbar .nav-link')];
-    const secObserver=new IntersectionObserver((ents)=>{
-      ents.forEach(ent=>{
-        if(ent.isIntersecting){
-          navlinks.forEach(n=>n.classList.remove('active'));
-          const link=document.querySelector(`.navbar .nav-link[href="#${ent.target.id}"]`);
-          link&&link.classList.add('active');
-        }
-      });
-    },{threshold:0.5});
+    const secObserver=new IntersectionObserver((ents)=>{ents.forEach(ent=>{if(ent.isIntersecting){navlinks.forEach(n=>n.classList.remove('active')); const link=document.querySelector(`.navbar .nav-link[href="#${ent.target.id}"]`); link&&link.classList.add('active');}});},{threshold:0.5});
     sections.forEach(s=>secObserver.observe(s));
-
-    // ---- Subtle hero parallax ----
-    const hero=document.querySelector('.hero-parallax');
-    window.addEventListener('scroll',()=>{
-      if(!hero) return; const y=window.scrollY; hero.style.backgroundPosition=`center ${Math.round(y*0.3)}px`;
-    },{passive:true});
   </script>
 </body>
 </html>
