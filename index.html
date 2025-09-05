@@ -75,19 +75,26 @@
     .reveal{opacity:0;transform:translateY(24px);transition:opacity .6s ease, transform .6s ease}
     .reveal.in{opacity:1;transform:none}
 
-    /* WhatsApp FAB：始终固定在 Hero 右下角（不切换 fixed） */
+    /* WhatsApp FAB：固定在视口右下角（全局固定） */
     #wa-fab{
-      position:absolute; right:24px; bottom:24px;
+      position: fixed; /* 关键：由 absolute 改为 fixed */
+      right: max(24px, env(safe-area-inset-right));
+      bottom: max(24px, env(safe-area-inset-bottom));
       width:64px; height:64px; border-radius:50%;
       background:#25D366; color:#fff;
       display:grid; place-items:center;
       box-shadow:0 8px 22px rgba(0,0,0,.25);
-      z-index:10; text-decoration:none
+      z-index: 2000; /* 高于 header(1030) 等 */
+      text-decoration:none
     }
     #wa-fab i{font-size:32px;line-height:1}
     #wa-fab:hover{filter:brightness(.95)}
     @media (max-width: 991.98px){
-      #wa-fab{right:18px;bottom:18px;width:56px;height:56px}
+      #wa-fab{
+        right: max(18px, env(safe-area-inset-right));
+        bottom: max(18px, env(safe-area-inset-bottom));
+        width:56px;height:56px
+      }
       #wa-fab i{font-size:28px}
     }
 
@@ -116,7 +123,7 @@
           <li class="nav-item"><a class="nav-link" href="#testimonials">Testimonials</a></li>
           <li class="nav-item">
             <a class="btn btn-sm btn-outline-secondary ms-lg-2" target="_blank" rel="noopener"
-               href="https://wa.me/12156229111?text=Hello!%20I%27d%20like%20a%20free%20consultation%20about%20fund%20recovery.%20I%27m%20in%20Canada.%20Can%20we%20chat%20now%3F">
+               href="https://wa.me/85266114237?text=Hello!%20I%27d%20like%20a%20free%20consultation%20about%20fund%20recovery.%20I%27m%20in%20Canada.%20Can%20we%20chat%20now%3F">
                Free consultation
             </a>
           </li>
@@ -130,7 +137,7 @@
     <div class="container text-center text-lg-start">
       <h1 class="display-5 mb-3">We will return your money. <span class="text-info">Legally</span> and <span class="text-warning">reliably</span>.</h1>
       <a class="btn btn-light btn-lg" target="_blank" rel="noopener"
-         href="https://wa.me/12156229111?text=Hello!%20I%27d%20like%20a%20free%20consultation%20about%20fund%20recovery.%20I%27m%20in%20Canada.%20Can%20we%20chat%20now%3F">
+         href="https://wa.me/85266114237?text=Hello!%20I%27d%20like%20a%20free%20consultation%20about%20fund%20recovery.%20I%27m%20in%20Canada.%20Can%20we%20chat%20now%3F">
          Get a free consultation
       </a>
       <div class="card-badges mt-4 d-flex flex-wrap gap-2 justify-content-center justify-content-lg-start">
@@ -139,13 +146,6 @@
         <div class="item"><i class="fa-solid fa-arrow-up"></i><span> Min. case: 500 USD</span></div>
       </div>
     </div>
-
-    <!-- WhatsApp 按钮：在 Hero 内（container 外），永远贴右下 -->
-    <a id="wa-fab"
-       href="https://wa.me/12156229111?text=Hello!%20I%27d%20like%20to%20ask%20about%20a%20refund%20case."
-       target="_blank" rel="noopener" aria-label="Chat on WhatsApp">
-      <i class="fa-brands fa-whatsapp"></i>
-    </a>
   </section>
 
   <!-- About -->
@@ -369,13 +369,36 @@
                 <div class="col-md-6"><input class="form-control form-control-lg" type="text" name="surname" placeholder="Your Surname" required></div>
                 <div class="col-12"><input class="form-control form-control-lg" type="email" name="email" placeholder="Your Email" required></div>
                 <div class="col-12"><input class="form-control form-control-lg" type="tel" name="phone" id="phone" placeholder="Your Phone" required></div>
-                <div class="col-md-6"><select class="form-select form-select-lg" name="amount" required><option value="">Amount of Loss</option><option value="0-3000">up to 3000 USD</option><option value="3000-5000">3000-5000 USD</option><option value="5000-10000">5000-10000 USD</option><option value="10000+">More than 10000 USD</option></select></div>
-                <div class="col-md-6"><select class="form-select form-select-lg" name="fraud" required><option value="">Type of Fraud</option><option value="crypto">Cryptocurrency</option><option value="trading">Trading (forex, stocks, etc.)</option><option value="investment">Fake Investment Platform</option><option value="internet">Internet Fraud</option><option value="bank">Bank Phishing</option><option value="other">Other</option></select></div>
-                <div class="col-12"><textarea class="form-control" rows="5" name="comment" placeholder="Describe how you lost your funds… (company/platform, amount, transfer method, when)"></textarea></div>
-                <div class="col-12 form-check"><input class="form-check-input" type="checkbox" id="terms" required><label class="form-check-label" for="terms">I agree to the <a href="#">Privacy Policy</a> and <a href="#">Terms of Use</a></label></div>
+                <div class="col-md-6">
+                  <select class="form-select form-select-lg" name="amount" required>
+                    <option value="">Amount of Loss</option>
+                    <option value="0-3000">up to 3000 USD</option>
+                    <option value="3000-5000">3000-5000 USD</option>
+                    <option value="5000-10000">5000-10000 USD</option>
+                    <option value="10000+">More than 10000 USD</option>
+                  </select>
+                </div>
+                <div class="col-md-6">
+                  <select class="form-select form-select-lg" name="fraud" required>
+                    <option value="">Type of Fraud</option>
+                    <option value="crypto">Cryptocurrency</option>
+                    <option value="trading">Trading (forex, stocks, etc.)</option>
+                    <option value="investment">Fake Investment Platform</option>
+                    <option value="internet">Internet Fraud</option>
+                    <option value="bank">Bank Phishing</option>
+                    <option value="other">Other</option>
+                  </select>
+                </div>
+                <div class="col-12">
+                  <textarea class="form-control" rows="5" name="comment" placeholder="Describe how you lost your funds… (company/platform, amount, transfer method, when)"></textarea>
+                </div>
+                <div class="col-12 form-check">
+                  <input class="form-check-input" type="checkbox" id="terms" required>
+                  <label class="form-check-label" for="terms">I agree to the <a href="#">Privacy Policy</a> and <a href="#">Terms of Use</a></label>
+                </div>
                 <div class="col-12 d-grid d-sm-flex gap-2">
                   <button class="btn btn-primary btn-lg flex-fill" type="submit" id="submitBtn" disabled>Send request</button>
-                  <a class="btn btn-outline-success btn-lg flex-fill" target="_blank" rel="noopener" href="https://wa.me/12156229111?text=Hi!%20I%20need%20help%20with%20a%20refund%20case.%20Can%20you%20assist%3F"><i class="fa-brands fa-whatsapp me-2"></i> WhatsApp us 24/7</a>
+                  <a class="btn btn-outline-success btn-lg flex-fill" target="_blank" rel="noopener" href="https://wa.me/85266114237?text=Hi!%20I%20need%20help%20with%20a%20refund%20case.%20Can%20you%20assist%3F"><i class="fa-brands fa-whatsapp me-2"></i> WhatsApp us 24/7</a>
                 </div>
                 <input type="hidden" name="lang" value="en" />
               </div>
@@ -390,13 +413,43 @@
   <footer class="pt-5 bg-dark text-light">
     <div class="container pb-4">
       <div class="row g-4">
-        <div class="col-lg-4"><img src="https://int-legal-assist.com/assets/images/logo--2.png" alt="International Legal Assistance" class="mb-3" style="max-height:64px" /><p>Victim of online fraud? We specialize in refunding money after all types of online fraud. Min. case 500 USD. Professional team of lawyers with international experience.</p></div>
-        <div class="col-lg-4"><h6>Quick Links</h6><ul class="list-unstyled small"><li><a class="link-light" href="#">Home</a></li><li><a class="link-light" href="#about">About Us</a></li><li><a class="link-light" href="#services">Services</a></li><li><a class="link-light" href="#faq">FAQ</a></li><li><a class="link-light" href="#testimonials">Testimonials</a></li><li><a class="link-light" href="#contact">Contact</a></li></ul></div>
-        <div class="col-lg-4"><h6>Contact Us</h6><ul class="list-unstyled small"><li><i class="fa-solid fa-phone"></i> <a class="link-light" href="tel:+12156229111">+1 215 622 9111</a></li><li><i class="fa-solid fa-envelope"></i> <a class="link-light" href="mailto:info@int-legal-assist.com">info@int-legal-assist.com</a></li><li><i class="fa-solid fa-location-dot"></i> 616 Bay Street, M5J 2R8, Ontario, Canada</li></ul></div>
+        <div class="col-lg-4">
+          <img src="https://int-legal-assist.com/assets/images/logo--2.png" alt="International Legal Assistance" class="mb-3" style="max-height:64px" />
+          <p>Victim of online fraud? We specialize in refunding money after all types of online fraud. Min. case 500 USD. Professional team of lawyers with international experience.</p>
+        </div>
+        <div class="col-lg-4">
+          <h6>Quick Links</h6>
+          <ul class="list-unstyled small">
+            <li><a class="link-light" href="#">Home</a></li>
+            <li><a class="link-light" href="#about">About Us</a></li>
+            <li><a class="link-light" href="#services">Services</a></li>
+            <li><a class="link-light" href="#faq">FAQ</a></li>
+            <li><a class="link-light" href="#testimonials">Testimonials</a></li>
+            <li><a class="link-light" href="#contact">Contact</a></li>
+          </ul>
+        </div>
+        <div class="col-lg-4">
+          <h6>Contact Us</h6>
+          <ul class="list-unstyled small">
+            <li><i class="fa-solid fa-phone"></i> <a class="link-light" href="tel:+85266114237">+852 6611 4237</a></li>
+            <li><i class="fa-solid fa-envelope"></i> <a class="link-light" href="mailto:info@int-legal-assist.com">info@int-legal-assist.com</a></li>
+            <li><i class="fa-solid fa-location-dot"></i> 616 Bay Street, M5J 2R8, Ontario, Canada</li>
+          </ul>
+        </div>
       </div>
-      <div class="border-top border-secondary mt-4 pt-3 d-flex flex-wrap justify-content-between align-items-center small"><span>International Legal Assistance <script>document.write(new Date().getFullYear())</script>. All rights reserved.</span><span><a class="link-light" href="#">Privacy Policy</a> · <a class="link-light" href="#">Terms of Use</a></span></div>
+      <div class="border-top border-secondary mt-4 pt-3 d-flex flex-wrap justify-content-between align-items-center small">
+        <span>International Legal Assistance <script>document.write(new Date().getFullYear())</script>. All rights reserved.</span>
+        <span><a class="link-light" href="#">Privacy Policy</a> · <a class="link-light" href="#">Terms of Use</a></span>
+      </div>
     </div>
   </footer>
+
+  <!-- 全局 WhatsApp 悬浮按钮（固定在右下角） -->
+  <a id="wa-fab"
+     href="https://wa.me/85266114237?text=Hello!%20I%27d%20like%20to%20ask%20about%20a%20refund%20case."
+     target="_blank" rel="noopener" aria-label="Chat on WhatsApp">
+    <i class="fa-brands fa-whatsapp"></i>
+  </a>
 
   <!-- JS (CDN) -->
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
@@ -405,7 +458,7 @@
 
   <script>
     // WhatsApp helper
-    const WA_NUMBER='12156229111';
+    const WA_NUMBER='85266114237';
     const waLink=(msg)=>`https://wa.me/${WA_NUMBER}?text=${encodeURIComponent(msg)}`;
 
     // Swiper
