@@ -77,26 +77,26 @@
 
     /* WhatsApp FAB：固定在视口右下角（全局固定） */
     #wa-fab{
-      position: fixed; /* 关键：由 absolute 改为 fixed */
-      right: max(24px, env(safe-area-inset-right));
-      bottom: max(24px, env(safe-area-inset-bottom));
-      width:64px; height:64px; border-radius:50%;
-      background:#25D366; color:#fff;
-      display:grid; place-items:center;
-      box-shadow:0 8px 22px rgba(0,0,0,.25);
-      z-index: 2000; /* 高于 header(1030) 等 */
-      text-decoration:none
-    }
-    #wa-fab i{font-size:32px;line-height:1}
-    #wa-fab:hover{filter:brightness(.95)}
-    @media (max-width: 991.98px){
-      #wa-fab{
-        right: max(18px, env(safe-area-inset-right));
-        bottom: max(18px, env(safe-area-inset-bottom));
-        width:56px;height:56px
-      }
-      #wa-fab i{font-size:28px}
-    }
+  position: fixed;
+  right: max(24px, env(safe-area-inset-right));
+  bottom: calc(max(24px, env(safe-area-inset-bottom)) + 64px); /* ↑ 往上挪64px */
+  width:64px; height:64px; border-radius:50%;
+  background:#25D366; color:#fff;
+  display:grid; place-items:center;
+  box-shadow:0 8px 22px rgba(0,0,0,.25);
+  z-index: 2000;
+  text-decoration:none;
+}
+#wa-fab i{font-size:32px;line-height:1}
+#wa-fab:hover{filter:brightness(.95)}
+@media (max-width: 991.98px){
+  #wa-fab{
+    right: max(18px, env(safe-area-inset-right));
+    bottom: calc(max(18px, env(safe-area-inset-bottom)) + 72px); /* 手机再高一点 */
+    width:56px; height:56px;
+  }
+  #wa-fab i{font-size:28px}
+}
 
     /* Responsive tweaks */
     @media (max-width: 991.98px){
